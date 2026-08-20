@@ -108,6 +108,14 @@ an engagement-bait ending.
 
 *(All names, companies, and outcomes above are synthetic and for demonstration only.)*
 
+## Attribution
+
+The pattern catalogue, channel-detection rules, and scoring rubric in this skill are adapted from **"the-humanizer,"** a community-created Claude skill that circulated informally (shared via Reddit, ca. March 2026) and exists in many personal skill collections. Its original author is unknown, and no canonical upstream repository or license has been identified for it.
+
+The generalization of that catalogue into channel-agnostic rules, the auto-detection logic, the four-dimension scoring system, the worked example, and the packaging of this repository are original to this project.
+
+If you know the original author of "the-humanizer" and can point to a canonical source, please open an issue — proper credit will be added.
+
 ## License
 
 MIT. See [LICENSE](./LICENSE).

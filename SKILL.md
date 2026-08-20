@@ -5,6 +5,8 @@ description: Reviews written content (blog posts, LinkedIn posts, emails, and Sl
 
 # AI Writing Humanizer
 
+**Provenance:** the pattern catalogue, channel-detection rules, and scoring rubric below are adapted from "the-humanizer," a community skill that circulated informally; its original author is unknown.
+
 A calibrated reviewer for detecting AI-generated texture in prose and rewriting it in an authentic human voice. When given a draft, auto-detect its content channel first, then run the full review pipeline with channel-specific rules applied.
 
 The operating stance throughout: write like a sharp, specific operator talking to another operator. Calm. Concrete. Human. Grounded. If a line would fit on a SaaS homepage or a consulting deck, it is wrong for this pipeline.
