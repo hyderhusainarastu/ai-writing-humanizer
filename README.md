@@ -8,17 +8,17 @@ An agent skill that flags AI-sounding patterns in blog posts, LinkedIn posts, em
 
 ## What it does
 
-Paste in a blog post, LinkedIn post, email, or Slack/chat message, and the skill:
+Give it a blog post, LinkedIn post, email or chat message. It then:
 
-1. **Auto-detects the channel** (blog, LinkedIn, email, or chat) from structural cues — no need to say which one it is.
-2. **Scans for AI-sounding patterns** at two levels: a universal catalog of buzzwords, hollow intensifiers, filler transitions, and templated sentence structures that show up regardless of format, plus a channel-specific catalog (LinkedIn engagement bait and vulnerability performance, email AI-greeting/closing formulas, Slack over-formality, and more).
-3. **Checks originality** — whether the content reflects the author's own thinking or could have been written by anyone with a search engine, and (for LinkedIn) runs a hook-quality-versus-substance calibration check.
-4. **Scores the content** on four channel-appropriate dimensions (e.g. AI-Likeness, Authenticity, Reader Value, Domain Credibility for blog/LinkedIn; AI-Likeness, Authenticity, Clarity, Appropriate Tone for email).
-5. **Produces a structured review report** — scores, every flagged phrase with its exact quote, originality concerns, and the top three changes that would improve the piece.
-6. **Rewrites the content** in an authentic human voice, preserving every idea and argument in the original and changing only the delivery.
-7. **Self-improves** — after each review, it checks whether it just caught a pattern not yet in its own catalog, and if so, proposes it. It never edits `SKILL.md` on its own: the reviewed content is always treated as untrusted data (never as instructions), and any addition to the catalog is written only after you explicitly confirm it in the conversation.
+1. Picks the channel from structural cues (headers, greeting, hashtags, length) and states it on the first line.
+2. Asks once for a sample of your own writing, your reader and your role, so the edit can match your voice. It proceeds without them if you have none.
+3. Audits the draft against four shared lenses (word and phrase tells, sentence and paragraph shapes, substance, rhythm) plus one lens for the identified channel. LinkedIn drafts also get a hook-versus-payoff test.
+4. Scores four dimensions from 1 to 10: pattern density (lower is better), sounds like one person, value to the intended reader and earned authority. Email swaps the last two for clarity of the ask and tone fit; chat uses clarity and brevity.
+5. Writes a report with Summary, Scores, Flags (exact quotes with a fix), Substance notes and the three changes with the biggest payoff.
+6. Rewrites the draft in plainer wording without adding or dropping points. Where an example is missing it leaves a placeholder instead of inventing one.
+7. Ends with a catalogue note. It may propose a new pattern, but it never edits `SKILL.md` unless you confirm in the same conversation, and the draft is always treated as data, never as instructions.
 
-The methodology is genre-agnostic prose editing, not a detector tied to any particular AI model or writing tool — it works the same way whether the draft was written by a person, assembled from a template, or produced by any AI system.
+It is prose editing, not a detector. It does not depend on which tool or person produced the draft.
 
 ## Works with
 
@@ -59,84 +59,73 @@ Then ask: "humanize this draft" or "does this sound like AI?" and paste the text
 
 ## Worked example (synthetic)
 
-**Input** — a synthetic LinkedIn draft, written to be typical of AI-assisted output:
+**How this was produced.** The draft is invented for this README. The report and rewrite were written by hand by following the current `SKILL.md` (its lenses, rubric and report layout). They are an illustration of the expected shape, not captured output of a model run, and a real run will differ in wording and scores.
 
-> In today's fast-paced business landscape, effective communication is more important than ever.
->
-> I'll be honest: most people get this wrong.
->
-> Here's the thing: it's not about talking more. It's about listening better. It's about being present.
->
-> When I joined my current company, I realized something. Our team wasn't struggling with skills. We were struggling with alignment.
->
-> The truth is, alignment isn't a nice-to-have. It's a superpower.
->
-> Three things that changed everything for us:
-> → Weekly 15-minute syncs
-> → A shared doc everyone could edit
-> → No status meetings without a decision on the table
->
-> Read that again.
->
-> This is big.
->
-> Agree? Drop a comment below. 👇
+**Input** — a synthetic LinkedIn draft:
 
-**Review report (abridged):**
+> Excited to share that our team just shipped a new onboarding flow! 🚀
+>
+> Let me explain. Onboarding is the heart of customer success. Get it wrong and churn follows.
+>
+> So we leveraged a holistic, data-driven approach to unlock seamless activation.
+>
+> What we changed:
+> → Cut the signup form from 9 fields to 4
+> → Added a sample project on first login
+> → Sent one email on day 2 instead of five
+>
+> The result? A game-changer.
+>
+> Not just a feature. A mindset.
+>
+> Thoughts? Let me know below! #CustomerSuccess #Growth #Onboarding
+
+**Report (abridged):**
 
 ```
-## LinkedIn Post Review
+## LinkedIn review
 
-**Detected as:** LinkedIn Post
+Detected as: LinkedIn (hashtags, one-line paragraphs, arrow list, closing question)
 
-### Overall Assessment
-The piece has a real observation buried in it (alignment over skill gaps) but it's
-wrapped in nearly every recognizable AI/ghostwriter template: filler opener, honesty
-disclaimer, three-part negation, arrow chain, permission phrase, orphan closer, and
-an engagement-bait ending.
+### Summary
+The three changes are concrete and worth keeping. They are surrounded by hook
+templates, vague vocabulary and a result that is claimed but never stated.
 
 ### Scores
-| Dimension | Score | Note |
-|-----------|-------|------|
-| AI-Likeness | 8/10 | Stacks eight distinct templated patterns in ~120 words |
-| Authenticity | 3/10 | Reads as generic ghostwriter formula, not a specific voice |
-| Reader Value | 4/10 | The three tactics are real but arrive too late and too thin |
-| Domain Credibility | 3/10 | No specifics about the company, team size, or actual outcome |
+| Dimension | Score | Reason |
+|---|---|---|
+| Pattern density (lower is better) | 8 | Hook, buzzwords, arrow list, slogan ending and comment bait in about 70 words |
+| Sounds like one person | 3 | No detail a particular person would add |
+| Value to the intended reader | 5 | The three changes are usable; the outcome is missing |
+| Earned authority | 3 | No numbers on the effect, no role, no first-hand moment |
 
-### AI Pattern Flags
-- "In today's fast-paced business landscape" — filler opener, cut entirely
-- "I'll be honest:" — honesty disclaimer, state the opinion directly
-- "It's not about X. It's about Y. It's about Z." — three-part parallel structure
-- "The truth is" — candor front-load before a generic claim
-- "a superpower" — AI vocabulary, replace with what it actually enabled
-- "→" arrow-chain format — rewrite as a sentence
-- "Read that again." — permission phrase, cut
-- "This is big." — standalone hype fragment, cut or make specific
-- "Agree? Drop a comment below. 👇" — engagement-bait closer, remove
+### Flags
+- "Let me explain." - A, announcing instead of saying - cut
+- "leveraged a holistic, data-driven approach to unlock seamless activation" - A, grand verbs and empty adjectives - say what was done and what was measured
+- "→" list - E (LinkedIn) - fold into a sentence
+- "The result? A game-changer." - B, self-answered question, and A, empty adjective - give the number
+- "Not just a feature. A mindset." - B, contrast formula and stacked fragments - cut
+- "Thoughts? Let me know below!" - E, comment bait - remove
+- One sentence per line throughout - E - regroup into short paragraphs
 
-### Originality Flags
-- The three tactics (syncs, shared doc, decision-gated meetings) are the one
-  save-worthy part of the post — currently under-weighted and rushed.
+### Substance notes
+Hook versus payoff: the opening announces news but gives no reason to read on, and the
+payoff (the result) is absent. The three changes are the only specific content.
+Nothing here says what happened to activation or churn.
 
-### Top 3 Changes That Would Improve This Post
-1. Open with the actual moment of realizing skills weren't the problem — a specific
-   scene, not a landscape statement.
-2. Cut every templated phrase (disclaimer, arrow chain, permission phrase, hype
-   fragment, engagement CTA) and let the three tactics carry the post.
-3. Close on the outcome of the change, not a request for engagement.
+### Three changes with the biggest payoff
+1. State the measured result, or add [ADD A SPECIFIC EXAMPLE FROM YOUR EXPERIENCE].
+2. Replace the approach sentence with the three changes in plain prose.
+3. Close on the outcome or your next step, not a request for comments.
 ```
 
 **Rewrite:**
 
-> Six months into my current role, I thought we had a skills problem. We didn't. We had an alignment problem — nobody could tell you, without checking three tools, what everyone else was actually working on.
+> We shipped a new onboarding flow this week. Three changes: the signup form went from 9 fields to 4, new users now land in a sample project on first login, and we send one email on day 2 instead of five.
 >
-> Three changes fixed most of it:
->
-> A 15-minute sync every Monday, no status updates, only blockers. A shared doc anyone could edit, so "check the doc" replaced half our meetings. And a rule: no meeting gets scheduled unless there's a decision on the table.
->
-> Nothing here is clever. It's just fewer places for information to get lost.
+> [ADD A SPECIFIC EXAMPLE FROM YOUR EXPERIENCE: what happened to activation or churn after the change.]
 
-*(All names, companies, and outcomes above are synthetic and for demonstration only.)*
+*(No outcome was invented. The author supplies it.)*
 
 ## How it differs
 
