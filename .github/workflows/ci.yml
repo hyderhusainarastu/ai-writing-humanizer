@@ -1,0 +1,15 @@
+name: ci
+on:
+  push:
+  pull_request:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check size limits
+        run: |
+          test "$(wc -l < SKILL.md)" -le 300
+          test "$(wc -c < PROMPT.md)" -le 6000
+          test "$(wc -c < PROMPT.short.md)" -le 1400
+      - run: bash test_install.sh

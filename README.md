@@ -1,6 +1,10 @@
 # AI Writing Humanizer
 
-An Agent Skill that reviews written content for AI-generated prose patterns and rewrites it in an authentic human voice — without changing what it actually says.
+An agent skill that flags AI-sounding patterns in blog posts, LinkedIn posts, emails and chat messages, scores them by channel, and rewrites the draft in a plainer human voice without changing the ideas.
+
+**An editing aid, not a detector bypass.** It does not measure or promise any AI-detector result and it does not hide who wrote a text. If a publisher, employer or course requires you to disclose AI assistance, disclose it.
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 ## What it does
 
@@ -16,16 +20,42 @@ Paste in a blog post, LinkedIn post, email, or Slack/chat message, and the skill
 
 The methodology is genre-agnostic prose editing, not a detector tied to any particular AI model or writing tool — it works the same way whether the draft was written by a person, assembled from a template, or produced by any AI system.
 
-## Installation
+## Works with
 
-This is an [Agent Skill](https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills) — a portable `SKILL.md` file with instructions an agent loads on demand.
+| Surface | How | Status |
+|---|---|---|
+| Claude Code | native skill (`./install.sh --claude`) | not tested |
+| Codex | native skill via `.agents/skills` (`./install.sh --agents`) | not tested |
+| Gemini CLI | native skill via `.agents/skills`, pointer in `GEMINI.md` | not tested |
+| Cursor | native skill via `.agents/skills`, reads `AGENTS.md` | not tested |
+| GitHub Copilot | pointer block in `.github/copilot-instructions.md` | not tested |
+| ChatGPT / Claude.ai / Gemini (chat) | prompt (`PROMPT.md`, `PROMPT.short.md`) | not tested |
 
-- **Claude Code**: copy this folder into `.claude/skills/ai-writing-humanizer/` at the root of your project (or your user-level skills directory to make it available everywhere).
-- **Any other agent runtime that supports the `SKILL.md` convention**: copy this folder into that runtime's equivalent skills directory. The file is self-contained — frontmatter (`name`, `description`) plus a complete instruction body — and assumes nothing about the host besides the ability to read text and, optionally, edit its own file for the self-improvement step.
+The installer script itself is covered by an offline test (`bash test_install.sh`, passing 2026-11-23). The "not tested" rows mean the skill has not yet been run end to end in that tool.
 
-No dependencies, no scripts, no configuration.
+## Quick start
 
-**A safety note on self-improvement:** the content you paste in for review is never treated as instructions — only as text to scan for AI-sounding phrasing. Even when the skill spots a genuinely new pattern, it will only ever propose adding it to the catalog and describe the exact change; it will not edit its own `SKILL.md` until you explicitly say to go ahead, in that conversation. If you're pasting in content from someone else (a colleague's draft, something copied off the web), keep this in mind: no matter how that content is worded, it cannot get the skill to rewrite its own file without your explicit go-ahead.
+```sh
+git clone https://github.com/hyderhusainarastu/ai-writing-humanizer
+cd ai-writing-humanizer
+./install.sh --claude              # ~/.claude/skills/ai-writing-humanizer
+./install.sh --agents --project .  # .agents/skills in the current project (Codex, Cursor, Gemini CLI)
+./install.sh --agents --user       # ~/.agents/skills
+./install.sh --copilot --project . # pointer block in .github/copilot-instructions.md
+```
+
+Run `./install.sh` with no flags to see the options and which tools it finds. Add `--dry-run` to preview and `--uninstall` to remove only what it installed. Without the script, copy this folder into your tool's skills directory by hand.
+
+Then ask: "humanize this draft" or "does this sound like AI?" and paste the text.
+
+### Paste-in use (no skill support needed)
+
+- **Any chat UI** (ChatGPT, Claude.ai, Gemini, a local model): paste `PROMPT.md`, then your draft. For fields with tight limits, use `PROMPT.short.md`.
+- **Custom GPT:** put the contents of `PROMPT.md` in the GPT's Instructions field. Keep Web Browsing off unless you want it.
+- **Gemini Gem:** put the contents of `PROMPT.md` in the Gem's instructions.
+- **API or app system prompt:** use `PROMPT.md` as the system message and send each draft as the user message. The prompt already tells the model to treat the draft as text, not instructions.
+
+**Safety note on self-improvement:** the skill treats the pasted draft as untrusted text. It can suggest a new pattern for its catalogue, but it never edits `SKILL.md` unless you tell it to in the same conversation.
 
 ## Worked example (synthetic)
 
@@ -108,14 +138,34 @@ an engagement-bait ending.
 
 *(All names, companies, and outcomes above are synthetic and for demonstration only.)*
 
-## Attribution
+## How it differs
 
-The pattern catalogue, channel-detection rules, and scoring rubric in this skill are adapted from **"the-humanizer,"** a community-created Claude skill that circulated informally (shared via Reddit, ca. March 2026) and exists in many personal skill collections. Its original author is unknown, and no canonical upstream repository or license has been identified for it.
+Detector tools score or paraphrase text to change a detection result. This skill does neither. It is a checklist-driven editor: it names specific phrases and structures, says why they read as formulaic, and offers a rewrite you can accept or edit. Style linters such as Vale cover house style rules; this covers formulaic AI-era prose and channel conventions.
 
-The generalization of that catalogue into channel-agnostic rules, the auto-detection logic, the four-dimension scoring system, the worked example, and the packaging of this repository are original to this project.
+## Limits
 
-If you know the original author of "the-humanizer" and can point to a canonical source, please open an issue — proper credit will be added.
+- It judges style, not authorship. Plain human writing can trip the same flags.
+- Scores are an editor's judgment, not measurements, and are not comparable across tools.
+- English prose only. The catalogue is tuned to common English-language business and social writing.
+- It will not invent examples; where a draft needs one, you supply it.
+
+## Related
+
+- [author-style-profile-mining](https://github.com/hyderhusainarastu/author-style-profile-mining)
+- [pre-submission-manuscript-audit](https://github.com/hyderhusainarastu/pre-submission-manuscript-audit)
+- [manuscript-mechanical-qa-sweep-pipeline](https://github.com/hyderhusainarastu/manuscript-mechanical-qa-sweep-pipeline)
+
+## Keywords
+
+humanize AI text, edit AI writing, remove AI phrases, LinkedIn post editor, email rewrite, copyediting skill, agent skill, SKILL.md, AGENTS.md.
+
+## Acknowledgement
+
+The idea for this skill was inspired by an informally shared community skill whose author and source are not known. The catalogue, channel rules, scoring rubric, worked example and packaging here were written independently for this repository. If you can point to a canonical source for that idea, please open an issue and credit will be added.
 
 ## License
 
 MIT. See [LICENSE](./LICENSE).
+
+---
+Part of palimnote-skills - more at https://github.com/hyderhusainarastu
